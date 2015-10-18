@@ -216,10 +216,7 @@ CREATE TABLE `user` (
     }
 
     public function getIndex() {
-        return 'xxxxxxxxxxxx';
-
-
-
+        return redirect('/attendance/list');
     }
 
 }

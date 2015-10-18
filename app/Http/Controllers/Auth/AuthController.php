@@ -21,6 +21,8 @@
          * @var Authenticator
          */
         protected $auth;
+
+        protected $redirectTo = '/myauth/login';
      
         /**
          * Create a new authentication controller instance.
@@ -30,10 +32,10 @@
          */
         public function __construct(Guard $auth, User $user)
         {
-            $this->user = $user; 
-            $this->auth = $auth;
+//            $this->user = $user; 
+//            $this->auth = $auth;
      
-            $this->middleware('guest', ['except' => ['getLogout']]); 
+//            $this->middleware('guest', ['except' => ['getLogout']]); 
         }
      
         /**
@@ -66,6 +68,9 @@
          */
         public function getLogin()
         {
+
+
+            die('PEINGGGGGGGG');
             return view('auth.login');
         }
      

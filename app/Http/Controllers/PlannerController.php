@@ -2,7 +2,7 @@
 use App\Models\Attendance; //including model.
 use App\Http\Controllers\Controller;
 class PlannerController extends Controller {
-    public function index() {
+    public function getIndex() {
         // Getting all records from model associates table.
 //        $data = Attendance::all();
 //        $data = Attendance::first();

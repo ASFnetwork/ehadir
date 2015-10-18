@@ -11,44 +11,149 @@
 |
 */
 
+// Basic routing, ver can be use ( GET, POST, PUT/PATCH, DELETE)
+//Route::get('test', 'TestController@index');
+//Route::get('attendance', 'AttendanceController@index');
+//Route::get('planner', 'PlannerController@index');
+//Route::get('laporan', 'LaporanController@attendance');
+Route::get('myauth/login', 'CustomAuth@getLogin');   
+Route::post('myauth/login', 'CustomAuth@postLogin');  
+
+
+//$user = User::where('email', Input::get('email'))->first();
+//
+//if( $user && $user->password == md5(Input::get('password')) )
+//{
+//    Auth::login($user); /// will log the user in for you
+//
+//    return Redirect::intended('dashboard');
+//}
+//else
+//{
+//   /// User not found or wrong password
+//}
+
+
+// Convert MD5 to bycrypt password - more secure, kena tambah sizs field
+//$user = User::where('username', '=', Input::get('username'))->first();
+//
+//if(isset($user)) {
+//    if($user->password == md5(Input::get('password'))) { // If their password is still MD5
+//        $user->password = Hash::make(Input::get('password')); // Convert to new format
+//        $user->save();
+//        Auth::login(Input::get('username'));
+//    }
+//}
+
+
 
     if (Auth::check()) {
-//        echo "I'm logged in as " . Auth::user()->user_username . "<br />";
-//        echo "<a href='/logout'>Log out</a>";
+        echo "I'm logged in as " . Auth::user()->user_username . "<br />";
+        echo "<a href='/logout'>Log out</a>";
 		//$user=User::where('userid','=',Auth::user()->userid)->first();
         //Session::put('user',$user->Username);
         Session::put('user',Auth::user()->user_username);
+        return redirect()->intended('/');
 
     } else {
+
 //        echo "I'm NOT logged in<br />";
+//        var_dump($_GET);
+//        return redirect('/myauth/login');
+
+//        return redirect()->route('myauth/login');
+//        return view('home.index');
+//        return redirect('myauth/login');
+//        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/myauth/login';
+//        die('cccccccccccccccccccc');
+        echo "I'm NOT logged in<br />";
 
 
-        Auth::attempt(array(
-            'user_username' => 'adabi',
-            'password'  => 'hardpass'
-        ));
+//        $user = User::where('user_username', '=', Input::get('username'))->first();
+        $user =     App\Models\Staff::where('user_username', '=', 'rozilla')->first();
+
+        if(isset($user)) {
+//            if($user->password == md5(Input::get('password'))) { // If their password is still MD5
+            if($user->user_pwd == md5('admin123')) { // If their password is still MD5
+//                $user->password = Hash::make(Input::get('password')); // Convert to new format
+                $user->user_pwd = Hash::make('admin123'); // Convert to new format
+                $user->save();
+//                Auth::login($user->user_username);
+                Auth::attempt(array(
+                    'user_username' => $user->user_username,
+                    'password'  => $user->user_pwd
+                ));
+            } else {
+
+                Auth::attempt(array(
+                    'user_username' => $user->user_username,
+                    'password'  => 'admin123'
+                ));
+            }
+        }
+
+//die(var_dump($user));
+        //Auth::attempt(array(
+        //    'user_username' => 'adabi',
+        //    'password'  => 'hardpass'
+        //));
+
+            //'user_username' => 'rozilla',
+            //'password'  => 'admin123'
             //'user_pwd'  => 'hardpass',
 
         if (Auth::check()) {
-//            echo "Now I'm logged in as " . Auth::user()->user_username . "<br />";
-//            echo "<a href='/logout'>Log out</a>";
+            echo "Now I'm logged in as " . Auth::user()->user_username . "<br />";
+            echo "<a href='/myauth/logout'>Log out</a>";
 			//$user=User::where('userid','=',Auth::user()->userid)->first();
 	        //Session::put('user',$user->Username);
 	        Session::put('user',Auth::user()->user_username);
         } else {
-//            echo "I'm still NOT logged in<br />";
+            echo "I'm still NOT logged in<br />";
         }
-    }
+  
+
+    Route::group(['middleware' => 'auth'], function () {
+        // Controller routing
+        // login url http://www.example.com/account/login
+        // logout url http://www.example.com/account/logout
+        // registration url http://www.example.com/account/register
+        Route::controllers([
+            'attendance' => 'AttendanceController',
+            'planner' => 'PlannerController',
+            'laporan' => 'LaporanController',
+        ]);
+
+        //A restful controller follows the standard blueprint for 
+        //  a restful resource, which mainly consists of: 
+        //VERB/Method   URI               Name            Action  
+        //================================================================
+        // GET|HEAD   staffs            staffs.index     App\Http\Controllers\StaffController@index   
+        // GET|HEAD   staffs/create     staffs.create    App\Http\Controllers\StaffController@create  
+        // POST       staffs            staffs.store     App\Http\Controllers\StaffController@store   
+        // GET|HEAD   staffs/{id}       staffs.show      App\Http\Controllers\StaffController@show    
+        // GET|HEAD   staffs/{id}/edit  staffs.edit      App\Http\Controllers\StaffController@edit    
+        // PUT        staffs/{id}       staffs.update    App\Http\Controllers\StaffController@update  
+        // PATCH      staffs/{id}                        App\Http\Controllers\StaffController@update  
+        // DELETE     staffs/{id}       staffs.destroy   App\Http\Controllers\StaffController@destroy     
+
+        Route::resource('staffs','StaffController');
+
+        Route::get('myauth/logout', 'CustomAuth@postLogin');  
 
 
-
-
+    });
 
 // Basic routing
 // Route without controller & model - direct return view
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/attendance');
 });
+
 
 // Basic routing
 // Route without controller & model - direct return view
@@ -66,23 +171,6 @@ Route::get('dashboard', function () {
 
 
 
-// Basic routing, ver can be use ( GET, POST, PUT/PATCH, DELETE)
-//Route::get('test', 'TestController@index');
-//Route::get('attendance', 'AttendanceController@index');
-//Route::get('planner', 'PlannerController@index');
-//Route::get('laporan', 'LaporanController@attendance');
-Route::get('myauth/login', 'CustomAuth@getLogin');   
-Route::post('myauth/login', 'CustomAuth@postLogin');  
-
-// Controller routing
-// login url http://www.example.com/account/login
-// logout url http://www.example.com/account/logout
-// registration url http://www.example.com/account/register
-Route::controllers([
-    'attendance' => 'AttendanceController',
-    'planner' => 'PlannerController',
-    'laporan' => 'LaporanController',
-]);
 
 
 
@@ -215,7 +303,7 @@ Route::get('/db', function () {
 //----- END OF LOGIN & AUTHENTICATION TEST -------------//
 
 
-
+  }
 define('ADMIN_PAGINATION', 50);
 define('SESSION_TIMEZONE', 'Asia/Kuala_Lumpur');
 

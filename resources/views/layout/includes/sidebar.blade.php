@@ -26,13 +26,13 @@
           <ul class="sidebar-menu">
             <li class="header">Operasi</li>
             <!-- 1 level Menu -->
-            <li><a href="attendance"><i class="fa fa-book"></i> <span>Kehadiran</span></a></li>
-            <li><a href="planner"><i class="fa fa-book"></i> <span>Planner</span></a></li>
-            <li><a href="staff"><i class="fa fa-book"></i> <span>Senarai Kakitangan</span></a></li>
-            <li><a href="userinfo"><i class="fa fa-book"></i> <span>Maklumat Pengguna</span></a></li>
+            <li><a href="/attendance"><i class="fa fa-book"></i> <span>Kehadiran</span></a></li>
+            <li><a href="/planner"><i class="fa fa-book"></i> <span>Planner</span></a></li>
+            <li><a href="/staffs"><i class="fa fa-book"></i> <span>Senarai Kakitangan</span></a></li>
+            <li><a href="/userinfo"><i class="fa fa-book"></i> <span>Maklumat Pengguna</span></a></li>
             <li class="header">Login</li>
-            <li><a href="logout"><i class="fa fa-circle-o text-red"></i> <span>Keluar</span></a></li>
-            <li><a href="password"><i class="fa fa-circle-o text-yellow"></i> <span>Tukar Katalaluan</span></a></li>
+            <li><a href="/logout"><i class="fa fa-circle-o text-red"></i> <span>Keluar</span></a></li>
+            <li><a href="/password"><i class="fa fa-circle-o text-yellow"></i> <span>Tukar Katalaluan</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
